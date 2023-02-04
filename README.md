@@ -1,2 +1,2 @@
 # blithexie.github.io
-This is my GITHUB Page, used to record something I have learned about program development.
+Hi, i am Blithe Xie from Guangzhou,China. Here is my GITHUB Page, used to record something I have learned about program development.
