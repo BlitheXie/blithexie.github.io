@@ -171,11 +171,11 @@ params:
   #scheme: Muse
   #scheme: Mist
   #scheme: Pisces
-  scheme: Gemini
+  scheme: Pisces
 
   # 开启暗模式
   # Dark Mode
-  darkmode: false
+  darkmode: true
 
 
   # 站点基本信息
