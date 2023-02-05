@@ -626,7 +626,7 @@ params:
     enable: true
     # 你的 Github 仓库地址
     # Your repository url on Github.
-    permalink: https://github.com/hugo-next
+    permalink: https://github.com/BlitheXie
     # 关注说明
     # Show this title when cursor move on.
     title: Follow me on GitHub
@@ -994,8 +994,8 @@ params:
   # Gitter Support
   # For more information: https://gitter.im
   gitter:
-    enable: true
-    room: hugo-next/community
+    enable: false
+    room: spring-projects/spring-boot
 
 
   # ---------------------------------------------------------------

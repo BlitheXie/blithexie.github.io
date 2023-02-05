@@ -3757,11 +3757,6 @@ mark.search-keyword {
   margin: auto;
 }
 
-.gitter-open-chat-button {
-  left: auto !important;
-  right: 10px !important;
-}
-
 .wl-actions > button:nth-child(3) {
   display: none;
 }
