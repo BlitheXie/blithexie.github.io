@@ -1,1 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><search/>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><search><entry><title>Go Issue During Setting Hugo</title><url>/about/</url><categories><category>Go</category></categories><tags><tag>Go</tag><tag>Hugo</tag><tag>bug</tag></tags><content type="html">ABOUT ME I am Blithe, from Guangzhou,Chia, is a backend developer.</content></entry><entry><title>Go Issue During Setting Hugo</title><url>/post/go-issue-during-setting-hugo/</url><categories><category>Go</category></categories><tags><tag>Go</tag><tag>Hugo</tag><tag>bug</tag></tags><content type="html">Connection fail 由于代理网站为国外网站，所以需要用以下命令来更改代理网站
+go env -w GOPROXY=https://goproxy.cn,direct
+Go install 无反应，安装的程序不能执行 由于go path未未设置在系统环境变量中，导致即便安装了程序在go_path里，执行时却无法发现。
+go env #获取GOPATH路径，将其设置为系统变量</content></entry></search>
