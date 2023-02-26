@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><search><entry><title>Go Issue During Setting Hugo</title><url>/about/</url><categories><category>Go</category></categories><tags><tag>Go</tag><tag>Hugo</tag><tag>bug</tag></tags><content type="html">ABOUT ME I am Blithe, from Guangzhou,Chia, is a backend developer.</content></entry><entry><title>Go Issue During Setting Hugo</title><url>/post/go-issue-during-setting-hugo/</url><categories><category>Go</category></categories><tags><tag>Go</tag><tag>Hugo</tag><tag>bug</tag></tags><content type="html">Connection fail 由于代理网站为国外网站，所以需要用以下命令来更改代理网站
 go env -w GOPROXY=https://goproxy.cn,direct
 Go install 无反应，安装的程序不能执行 由于go path未未设置在系统环境变量中，导致即便安装了程序在go_path里，执行时却无法发现。
-go env #获取GOPATH路径，将其设置为系统变量</content></entry></search>
+go env #获取GOPATH路径，将其设置为系统变量</content></entry><entry><title>Spring源码之路-容器加载相关类简单介绍</title><url>/post/java-spring-source-learning1/</url><categories><category>Java</category><category>Spring源码分析</category></categories><tags><tag>Java</tag><tag>Spring</tag></tags><content type="html"><![CDATA[1.1 容器加载相关类分析 总体类图 BeanDefinitionRegistry AliasRegistry org.springframework.core; &lt;Interface&gt;
+管理alias的公共接口，服务于一个另一个超级接口BeanDefinitionRegistry
+BeanDefinitionRegistry org.springframework.beans.factory.support;&lt;Interface&gt; extends AliasRegistry
+Bean声明注册中心接口，继承了AliasRegistry接口，所以拥有alias管理功能。同时拥有bean定义相关管理的功能；如： BeanDefinition org.springframework.beans.factory.config;&lt;Interface&gt; extends AttributeAccessor, BeanMetadataElement
+最小的Bean定义接口，用于记录描述一个bean实例的信息以及进一步实现的信息。
+AttributeAccessor org.springframework.core; &lt;Interface&gt;
+属性的访问接口，拥有属性的CRUD，以及一个compute。Bean实现它相当于Bean就有了属性的相关功能。
+BeanMetadataElement org.springframework.beans;&lt;Interface&gt;
+元数据接口，只有getSource一个默认方法。默认实现会返回一个null。 实现这个接口相当于暴露一个方法到外面，告诉人家包装到最底层的object是什么。
+SimpleAliasRegistry org.springframework.core;&lt;Class&gt;
+这个类是AliasRegistry的简单实现。利用ConcurrentHashMap来存储alias的mapping，key-alias,value-name。斯所以一个name有很多alias。
+/** Map from alias to canonical name. */ private final Map&lt;String, String&gt; aliasMap = new ConcurrentHashMap&lt;&gt;(16); checkForAliasCircle(name, alias); 在 registerAlias 中有一个 checkForAliasCircle(name,alias)来防止互为别名。 allowAliasOverriding() 获取是否可以覆盖alias，这里简单设置为ture。提醒，这里alias是有机会拥有自己的alias的。
+DefaultSingletonBeanRegistry SingletonBeanRegistry org.springframework.beans.factory.config;&lt;Interface&gt;
+管理Singleton的基础接口，暴露singleton CRUD的操作。
+DefaultSingletonBeanRegistry org.springframework.beans.factory.support;&lt;Class&gt; extends SimpleAliasRegistry implements SingletonBeanRegistry
+主要维护以下几个concurrentHashMap：singletonObjects、singletonFactories、earlySingletonObjects、以及三个set: registeredSingletons、singletonsCurrentlyInCreation、inCreationCheckExclusions 以完成加减SingletonBean的完整的基础流程。其中包含依赖bean的解析过程。 该bean主要是提供一个默认实现。
+FactoryBeanRegistrySupport org.springframework.beans.factory.support；abstract &lt;Class&gt; extends DefaultSingletonBeanRegistry
+维护factoryBeanObjectCache用于存储factoryBean，它用于支持需要管理FactoryBean的注册中心。同时又拥有DefaultSingletonBeanRegistry的能力。
+BeanFactory org.springframework.beans.factory&lt;Interface&gt;
+这个是全部Spring容器的根接口，包括之后的configurableBeanFactory和ListableBeanFactory。 这个接口的说明信息上还包含了bean生命周期中14个启动过程和3个消亡过程，一个标准的BeanFactory应该尽可能的覆盖这些过程。 这个接口显然是一个工厂接口，所以基本是获取Bean的实例或属性方法。
+常量：FACTORY_BEAN_PREFIX用来标记 是否factoryBean，值为“&amp;”
+HierarchicalBeanFactory org.springframework.beans.factory&lt;Interface&gt; extends BeanFactory
+就是一个普通的BeanFactory加了等级方法： getParentBeanFactory。用来划分BeanFactory等级的接口。 包含一些关于自动注入的方法，生命周期方法等。&lt;To Be Enrich&gt;
+ListableBeanFactory org.springframework.beans.factory&lt;Interface&gt; extends BeanFactory
+可以罗列所有bean信息的功能的BeanFactory接口。
+StaticListableBeanFactory org.springframework.beans.factory.support;&lt;Class&gt; implements ListableBeanFactory
+一个ListableBeanFactory的简单实现。&lt;To Be Enrich&gt;
+AutowireCapableBeanFactory org.springframework.beans.factory&lt;Interface&gt; extends BeanFactory
+同样继承了BeanFactory，拥有自动注入相关方法的BeanFactory接口。定义了多个常量来，用于描述自动注入的方式。还有一些创建Bean相关的方法。
+ConfigurableBeanFactory org.springframework.beans.factory.config; &lt;Interface&gt; extends HierarchicalBeanFactory, SingletonBeanRegistry
+这个接口既有单例Bean的注册功能（我告诉你，我是单例Bean）又有层级BeanFactory（可以从中获取Bean，或者从父BeanFactory中获取） 除此之外，它自身还丰富了一些与bean生命周期相关的方法。设置Classloader,设置父BeanFactory，设置BeanPostProcessor等等。
+AbstractBeanFactory org.springframework.beans.factory.support &lt;abstract class&gt; extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory 这是BeanFactory的抽象基类，实现了Configurable的所有方法&lt;To Be Enrich&gt;
+DefaultListableBeanFactory org.springframework.beans.factory.support &lt;Class&gt; extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable
+*configurelistablebeanfactory和BeanDefinitionRegistry接口的Spring默认实现: 一个基于bean定义元数据的成熟的bean工厂，可通过后处理器扩展。
+典型的用法是在访问bean之前先注册所有bean定义(可能是从bean定义文件中读取)。因此，在本地Bean定义表中，按名称查找Bean是一种成本低廉的操作，操作对象是预先解析的Bean定义元数据对象*。
+ConfigurableListableBeanFactory org.springframework.beans.factory.config &lt;Interface&gt; extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory
+AbstractAutowireCapableBeanFactory org.springframework.beans.factory.support;&lt;abstract class&gt; extends AbstractBeanFactory implements AutowireCapableBeanFactory
+提供bean创建(带有构造函数解析)、属性填充、连接(包括自动装配)和初始化。处理运行时bean引用，解析托管集合，调用初始化方法，等等。支持根据名称自动装配构造函数、属性和类型自动装配属性。
+]]></content></entry></search>
