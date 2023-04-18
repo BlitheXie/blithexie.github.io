@@ -8,9 +8,9 @@ description: "搭建Hugo环境时，关于Go的小issue"
 # 文章内容关键字
 keywords: "Spring BeanFactory"
 # 发表日期
-date: 2023-02-26
+date: 2023-04-19
 # 最后修改日期
-lastmod: 2023-02-26
+lastmod: 2023-04-19
 # 分类
 categories:
  - Java
