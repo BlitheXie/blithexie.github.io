@@ -39,7 +39,7 @@ expand: true
 # 绝对访问路径
 #url: "{{ lower .Name }}.html"
 # 开启文章置顶，数字越小越靠前
-weight: 1
+weight: 3
 # 开启数学公式渲染，可选值： mathjax, katex
 math: mathjax
 # 开启各种图渲染，如流程图、时序图、类图等

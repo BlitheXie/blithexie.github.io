@@ -4,9 +4,9 @@ date: 2023-04-18T23:19:59+08:00
 draft: true
 
 # 文章内容摘要
-description: "搭建Hugo环境时，关于Go的小issue"
+description: "Spring源码学习2，Reader相关类分析"
 # 文章内容关键字
-keywords: "Spring BeanFactory"
+keywords: "Spring BeanDefinitionReader"
 # 发表日期
 date: 2023-04-19
 # 最后修改日期
